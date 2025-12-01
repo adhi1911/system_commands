@@ -1,0 +1,53 @@
+# OPPE Problem 2
+
+## Problem Statement
+
+You have been provided with a list of items of a shopping bill in HTML. The list has name of the item, price, and quantity. Write a **bash script** `script.sh` to compute the total bill amount.
+
+**Note**:
+The HTML input to the script will be sent through standard input (`&0`).
+
+## Sample Input
+
+```html
+<li>Item: <span class="item-name">Batteries</span>, Price: <span class="item-price">Rs. 14</span>, Qty: <span class="item-qty">6</span></li>
+<li>Item: <span class="item-name">USB Cable</span>, Price: <span class="item-price">Rs. 85</span>, Qty: <span class="item-qty">1</span></li>
+<li>Item: <span class="item-name">Ball Pens</span>, Price: <span class="item-price">Rs. 12</span>, Qty: <span class="item-qty">5</span></li>
+```
+
+## Sample Output
+
+```bash
+229
+```
+
+## Instructions
+
+- You should create a bash script named `script.sh`.
+- It should be present in `~/se2001/nppe_2/` directory.
+- The script should read the HTML input from standard input (`&0`).
+- The script should output the required format to standard output (`&1`).
+
+
+
+## Solution
+
+```bash 
+#!/bin/bash
+
+sum=0
+
+while IFS= read -r line ; do
+        price=$(echo $line | grep -oP 'item-price">Rs\. \K[0-9]+')
+        qty=$(echo $line | grep -oP 'item-qty">\K[0-9]+')
+
+        if [ -n $price ] && [ -n $qty ]
+        then
+                sum=$(( sum + price * qty ))
+        fi
+done
+
+echo $sum
+```
+
+
